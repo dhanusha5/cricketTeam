@@ -31,7 +31,7 @@ const convertDbObjectToResponseObject = (dbObject) => {
   return {
     playerId: dbObject.player_id,
     playerName: dbObject.player_name,
-    jerseyNumber: dbObject.player_id,
+    jerseyNumber: dbObject.jersey_number,
     role: dbObject.role,
   };
 };
@@ -44,7 +44,7 @@ app.get("/players/", async (request, response) => {
       cricket_Team;`;
   const cricketArray = await db.all(getCricketQuery);
   response.send(
-    playersArray.map((eachPlayer) =>
+    cricketArray.map((eachPlayer) =>
       convertDbObjectToResponseObject(eachPlayer)
     )
   );
