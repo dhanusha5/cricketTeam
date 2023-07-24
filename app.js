@@ -27,6 +27,16 @@ const initializeDBAndServer = async () => {
 
 initializeDBAndServer();
 
+const convertDbObjectToResponseObject = (dbObject) => {
+  return {
+    playerId: dbObject.player_id,
+    playerName: dbObject.player_name,
+    jerseyNumber: dbObject.player_id,
+    role: dbObject.role,
+  };
+};
+
+
 app.get("/players/", async (request, response) => {
   const getPlayersQuery = `
     SELECT
@@ -34,8 +44,13 @@ app.get("/players/", async (request, response) => {
     FROM
       cricket_Team;`;
   const playersArray = await db.all(getPlayersQuery);
-  response.send(playersArray);
+  response.send(
+    playersArray.map((eachPlayer) =>
+      convertDbObjectToResponseObject(eachPlayer)
+    )
+  );
 });
+
 
 app.post("/players/", async (request, response) => {
   const playerDetails = request.body;
